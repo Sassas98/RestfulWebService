@@ -11,3 +11,13 @@ public class RestfulWebServiceApplication {
 	}
 	
 }
+
+/*
+<dependency>   
+			<groupId>org.springdoc</groupId> 
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.0.2</version>
+</dependency>
+ * */
+//http://localhost:8080/v3/api-docs
+//http://localhost:8080/swagger-ui/index.html#/product-service-controller/fileUpload
