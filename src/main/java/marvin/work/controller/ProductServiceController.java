@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import marvin.work.exception.ProductNotFoundException;
 import marvin.work.model.Product;
 
 import org.springframework.core.io.InputStreamResource;
@@ -82,15 +83,17 @@ public class ProductServiceController {
 		if(productRepo.containsKey(id)) {
 			productRepo.get(id).setName(product.getName());
 			return new ResponseEntity<Object>("Product updated.", HttpStatus.OK);
-		}
-		return new ResponseEntity<Object>("Product not exists.", HttpStatus.NOT_FOUND);
+		} else throw new ProductNotFoundException("Prodotto "+id+" non trovato.");
 	}
+	
+	//private static String path = "/Users/15mim/OneDrive/Desktop/";
+	private static String path = "/Users/Marvin/Desktop/";
 	
 	@RequestMapping(value="/fileUpload", method = RequestMethod.POST, 
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file,
 			@RequestParam("filename") String filename) throws IOException {
-		File newFile = new File("/Users/15mim/OneDrive/Desktop/" + filename);
+		File newFile = new File(path + filename);
 		newFile.createNewFile();
 		FileOutputStream fileOut = new FileOutputStream(newFile);
 		fileOut.write(file.getBytes());
@@ -101,7 +104,7 @@ public class ProductServiceController {
 	@SuppressWarnings("unchecked")
 	@GetMapping(value="/download")
 	public ResponseEntity<Object> fileDownload(@PathParam("filename") String filename) throws FileNotFoundException{
-		String fileN = "/Users/15mim/OneDrive/Desktop/" + filename;
+		String fileN = path + filename;
 		File file = new File(fileN);
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 		HttpHeaders header = new HttpHeaders();
