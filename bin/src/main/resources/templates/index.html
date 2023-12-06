@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -90,24 +90,23 @@
             .then(data => console.log(data))
             .catch(error => console.error('Error:', error));
     }
-    
+
     function updateProduct() {
-    const productId = document.getElementById('updateProductId').value;
-    const newProductName = document.getElementById('updateProductName').value;
-    const updatedProduct = { name: newProductName };
+        const productId = document.getElementById('updateProductId').value;
+        const newProductName = document.getElementById('updateProductName').value;
+        const updatedProduct = { id: productId, name: newProductName };
 
-    fetch(`${baseUrl}/products?id=${productId}`, {
-        method: 'PUT',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedProduct),
-    })
-    .then(response => response.text())
-    .then(data => console.log(data))
-    .catch(error => console.error('Error:', error));
-}
-
+        fetch(`${baseUrl}/products/${productId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedProduct),
+        })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .catch(error => console.error('Error:', error));
+    }
 
     function deleteProduct() {
         const productId = document.getElementById('deleteProductId').value;
@@ -123,7 +122,7 @@
     function getProductById() {
         const productId = document.getElementById('getProductId').value;
 
-        fetch(`${baseUrl}/products/${productId}`)
+        fetch(`${baseUrl}/product?id=${productId}`)
             .then(response => response.json())
             .then(data => {
                 const resultDiv = document.getElementById('productResult');
@@ -137,9 +136,8 @@
         var file = fileInput.files[0];
         var formData = new FormData();
         formData.append('file', file);
-        var filename = file.name;
-		formData.append('filename', filename);
-        fetch(`${baseUrl}/fileUpload`, {
+
+        fetch(`${baseUrl}/upload`, {
             method: 'POST',
             body: formData
         })
@@ -154,7 +152,7 @@
     function downloadFile() {
         var filenameInput = document.getElementById('downloadFilename');
         var filename = filenameInput.value;
-        window.location.href = `${baseUrl}/download?filename=` + filename;
+        window.location.href = `${baseUrl}/download/` + filename;
     }
 </script>
 </body>

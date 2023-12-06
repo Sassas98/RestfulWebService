@@ -15,7 +15,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -91,7 +90,7 @@ public class ProductServiceController {
 			consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<Object> fileUpload(@RequestParam("file") MultipartFile file,
 			@RequestParam("filename") String filename) throws IOException {
-		File newFile = new File("/Users/Marvin/Desktop/" + filename);
+		File newFile = new File("/Users/15mim/OneDrive/Desktop/" + filename);
 		newFile.createNewFile();
 		FileOutputStream fileOut = new FileOutputStream(newFile);
 		fileOut.write(file.getBytes());
@@ -99,9 +98,10 @@ public class ProductServiceController {
 		return new ResponseEntity<Object>("File saved.", HttpStatus.OK);
 	}
 	
+	@SuppressWarnings("unchecked")
 	@GetMapping(value="/download")
 	public ResponseEntity<Object> fileDownload(@PathParam("filename") String filename) throws FileNotFoundException{
-		String fileN = "/Users/Marvin/Desktop/" + filename;
+		String fileN = "/Users/15mim/OneDrive/Desktop/" + filename;
 		File file = new File(fileN);
 		InputStreamResource resource = new InputStreamResource(new FileInputStream(file));
 		HttpHeaders header = new HttpHeaders();
@@ -109,6 +109,7 @@ public class ProductServiceController {
 		header.add("Cache-control", "no-cache, no-store, must-revalidate");
 		header.add("Pragma", "no-cache");
 		header.add("Expires", "0");
+		@SuppressWarnings("rawtypes")
 		ResponseEntity response = ResponseEntity.ok().headers(header).contentLength(file.length())
 				.contentType(MediaType.parseMediaType("application/txt")).body(resource);
 		return response;
