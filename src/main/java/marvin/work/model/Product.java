@@ -1,8 +1,13 @@
 package marvin.work.model;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Product {
-	
-	private String id, name;
+	@Id
+	private String id;
+	private String name;
 
 	public String getId() {
 		return id;

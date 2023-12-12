@@ -8,9 +8,11 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+import marvin.work.ProductListRepository;
 import marvin.work.exception.ProductNotFoundException;
 import marvin.work.model.Product;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -33,7 +35,7 @@ import jakarta.websocket.server.PathParam;
 @RestController
 public class ProductServiceController {
 	
-	private static Map<String, Product> productRepo = new HashMap<>();
+	/*private static Map<String, Product> productRepo = new HashMap<>();
 	static {
 		Product miele = new Product();
 		miele.setId("1");
@@ -43,25 +45,37 @@ public class ProductServiceController {
 		zucchero.setId("2");
 		zucchero.setName("zucchero");
 		productRepo.put(zucchero.getId(), zucchero);
+	}*/
+
+	private ProductListRepository productRepository;
+	@Autowired
+	public ProductServiceController(ProductListRepository productRepository) {
+		this.productRepository=productRepository;
+		Product miele = new Product();
+		miele.setId("1");
+		miele.setName("miele");
+		Product zucchero = new Product();
+		zucchero.setId("2");
+		zucchero.setName("zucchero");
+		this.productRepository.save(miele);
+		this.productRepository.save(zucchero);
 	}
-	
-	
 	
 	@GetMapping(value="/products")
 	public ResponseEntity<Object> getProducts() {
-		return new ResponseEntity<Object>(productRepo.values(), HttpStatus.OK);
+		return new ResponseEntity<Object>(productRepository.findAll(), HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/products/{id}")
 	public ResponseEntity<Object> getProduct(@PathVariable("id") String id) {
 		System.out.println(id);
-		return new ResponseEntity<Object>(productRepo.get(id), HttpStatus.OK);
+		return new ResponseEntity<Object>(productRepository.findById(id), HttpStatus.OK);
 	}
 	
 	@PostMapping(value="/products")
 	public ResponseEntity<Object> addProduct(@RequestBody Product p){
-		if(!productRepo.containsKey(p.getId())) {
-			productRepo.put(p.getId(), p);
+		if(!productRepository.existsById(p.getId())) {
+			productRepository.save(p);
 			return new ResponseEntity<Object>("Product created.", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Object>("Product already exists.", HttpStatus.BAD_REQUEST);
@@ -70,8 +84,8 @@ public class ProductServiceController {
 	
 	@DeleteMapping(value="/products/{id}")
 	public ResponseEntity<Object> deleteProduct(@PathVariable("id") String id){
-		if(productRepo.containsKey(id)) {
-			productRepo.remove(id);
+		if(productRepository.existsById(id)) {
+			productRepository.deleteById(id);
 			return new ResponseEntity<Object>("Product successfully deleted.", HttpStatus.OK);
 		} else {
 			return new ResponseEntity<Object>("Product not exists.", HttpStatus.NOT_FOUND);
@@ -80,8 +94,9 @@ public class ProductServiceController {
 	
 	@RequestMapping(value="/products", method = RequestMethod.PUT)
 	public ResponseEntity<Object> updateProduct(@PathParam("id") String id,@RequestBody Product product){
-		if(productRepo.containsKey(id)) {
-			productRepo.get(id).setName(product.getName());
+		if(productRepository.existsById(id)) {
+			product.setId(id);
+			productRepository.save(product);
 			return new ResponseEntity<Object>("Product updated.", HttpStatus.OK);
 		} else throw new ProductNotFoundException("Prodotto "+id+" non trovato.");
 	}
