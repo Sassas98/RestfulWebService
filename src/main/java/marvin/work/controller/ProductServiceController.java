@@ -37,8 +37,10 @@ public class ProductServiceController {
 	}*/
 
 	private ProductListRepository productRepository;
+	
 	public ProductServiceController(ProductListRepository productRepository) {
 		this.productRepository=productRepository;
+		/*
 		Product miele = new Product();
 		miele.setId("1");
 		miele.setName("miele");
@@ -47,6 +49,7 @@ public class ProductServiceController {
 		zucchero.setName("zucchero");
 		this.productRepository.save(miele);
 		this.productRepository.save(zucchero);
+		*/
 	}
 	
 	@GetMapping(value="/products")

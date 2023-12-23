@@ -17,27 +17,38 @@
 
 <h2>Create Product</h2>
 <label for="productId">Product ID:</label>
-<input type="text" id="productId">
+<div>
+	<input type="text" id="productId">
+</div>
 <label for="productName">Product Name:</label>
-<input type="text" id="productName">
+<div>
+	<input type="text" id="productName">
+</div>
 <button onclick="createProduct()">Create Product</button>
-
 
 <h2>Update Product</h2>
 <label for="updateProductId">Product ID:</label>
-<input type="text" id="updateProductId">
+<div>
+	<input type="text" id="updateProductId">
+</div>
 <label for="updateProductName">New Product Name:</label>
-<input type="text" id="updateProductName">
+<div>
+	<input type="text" id="updateProductName">
+</div>
 <button onclick="updateProduct()">Update Product</button>
 
 <h2>Delete Product</h2>
 <label for="deleteProductId">Product ID:</label>
-<input type="text" id="deleteProductId">
+<div>
+	<input type="text" id="deleteProductId">
+</div>
 <button onclick="deleteProduct()">Delete Product</button>
 
 <h2>Get Product by ID</h2>
 <label for="getProductId">Product ID:</label>
-<input type="text" id="getProductId">
+<div>
+	<input type="text" id="getProductId">
+</div>
 <button onclick="getProductById()">Get Product</button>
 <div id="productResult"></div>
 
@@ -52,7 +63,9 @@
 
 <h2>File Download</h2>
 <p>Enter the filename to download:</p>
-<input type="text" id="downloadFilename" placeholder="Filename">
+<div>
+	<input type="text" id="downloadFilename" placeholder="Filename">
+</div>
 <br>
 <button type="button" onclick="downloadFile()">Download File</button>
 
