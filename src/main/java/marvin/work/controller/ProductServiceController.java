@@ -6,10 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 
-import marvin.work.ProductListRepository;
 import marvin.work.exception.ProductNotFoundException;
+import marvin.work.model.Person;
+import marvin.work.model.PersonListRepository;
 import marvin.work.model.Product;
+import marvin.work.model.ProductListRepository;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -24,32 +27,23 @@ import jakarta.websocket.server.PathParam;
 @RestController
 public class ProductServiceController {
 	
-	/*private static Map<String, Product> productRepo = new HashMap<>();
-	static {
-		Product miele = new Product();
-		miele.setId("1");
-		miele.setName("miele");
-		productRepo.put(miele.getId(), miele);
-		Product zucchero = new Product();
-		zucchero.setId("2");
-		zucchero.setName("zucchero");
-		productRepo.put(zucchero.getId(), zucchero);
-	}*/
-
-	private ProductListRepository productRepository;
+	private int count = 10;
 	
-	public ProductServiceController(ProductListRepository productRepository) {
-		this.productRepository=productRepository;
-		/*
-		Product miele = new Product();
-		miele.setId("1");
-		miele.setName("miele");
-		Product zucchero = new Product();
-		zucchero.setId("2");
-		zucchero.setName("zucchero");
-		this.productRepository.save(miele);
-		this.productRepository.save(zucchero);
-		*/
+	@Autowired
+	private ProductListRepository productRepository;
+	@Autowired
+	private PersonListRepository personRepository;
+	
+	@GetMapping(value="/persons")
+	public ResponseEntity<Object> getPersons() {
+		return new ResponseEntity<Object>(personRepository.findAll(), HttpStatus.OK);
+	}
+	
+	@PostMapping(value="/persons")
+	public ResponseEntity<Object> addPerson(){
+		Person person = new Person(count, "Clone", "N°"+count++);
+		this.personRepository.save(person);
+		return new ResponseEntity<Object>("Person created.", HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/products")

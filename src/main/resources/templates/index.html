@@ -15,6 +15,11 @@
 <h2>Product List</h2>
 <ul id="productList"></ul>
 
+<button onclick="createPerson()">Clone Person</button>
+<button onclick="getPersons()">Get Persons</button>
+<h2>Person List</h2>
+<ul id="personList"></ul>
+
 <h2>Create Product</h2>
 <label for="productId">Product ID:</label>
 <div>
@@ -72,7 +77,34 @@
 
 <script>
     const baseUrl = 'http://localhost:8080';
+	
+	function getPersons() {
+        fetch(`${baseUrl}/persons`)
+            .then(response => response.json())
+            .then(data => {
+                const personList = document.getElementById('personList');
+                personList.innerHTML = ''; // Pulisci la lista precedente
 
+                data.forEach(person => {
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `ID: ${person.id}, Name: ${person.name}, Surname: ${person.surname}`;
+                    personList.appendChild(listItem);
+                });
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    function createPerson() {
+
+        fetch(`${baseUrl}/persons`, {
+            method: 'POST'
+        })
+            .then(response => response.text())
+            .then(data => console.log(data))
+            .then(() =>  getPersons())
+            .catch(error => console.error('Error:', error));
+    }
+	
     function getProducts() {
         fetch(`${baseUrl}/products`)
             .then(response => response.json())
