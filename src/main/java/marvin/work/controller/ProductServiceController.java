@@ -27,7 +27,7 @@ import jakarta.websocket.server.PathParam;
 @RestController
 public class ProductServiceController {
 	
-	private int count = 10;
+	private int count = 1;
 	
 	@Autowired
 	private ProductListRepository productRepository;

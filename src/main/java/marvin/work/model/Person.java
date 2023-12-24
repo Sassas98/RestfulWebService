@@ -1,7 +1,10 @@
 package marvin.work.model;
 
+import java.util.List;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.Transient;
 
 @Entity
 public class Person {
@@ -10,6 +13,8 @@ public class Person {
 	private int id;
 	private String name;
 	private String surname;
+	@Transient
+	private List<String> value;
 	
 	public Person() {}
 	
